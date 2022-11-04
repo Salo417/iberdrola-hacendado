@@ -1,0 +1,11 @@
+.loginBackground::part(background) {
+    background: purple;
+}
+
+div.loginBox {
+    width: 45%;
+    min-height: 45%;
+    margin: auto;
+    margin-top: 8%;
+    background: var(--ion-color-light);
+}
