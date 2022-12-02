@@ -24,6 +24,8 @@
     "@capacitor/haptics": "4.0.1",
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
+    "@fullcalendar/angular": "^5.11.3",
+    "@fullcalendar/daygrid": "^5.11.3",
     "@ionic/angular": "^6.1.9",
     "ionicons": "^6.0.3",
     "rxjs": "~6.6.0",

@@ -30,7 +30,12 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": [
+                        "src/theme/variables.scss", 
+                        "src/global.scss",
+                        "./node_modules/@fullcalendar/common/main.css",
+                        "./node_modules/@fullcalendar/daygrid/main.css"
+                      ],
             "scripts": [],
             "aot": false,
             "vendorChunk": true,
@@ -96,7 +101,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "styles": [],
+            "styles": [
+              "./node_modules/@fullcalendar/common/main.css",
+              "./node_modules/@fullcalendar/daygrid/main.css"
+            ],
             "scripts": [],
             "assets": [
               {

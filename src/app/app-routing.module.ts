@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'bill',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -26,6 +26,14 @@ const routes: Routes = [
   {
     path: 'hired-services',
     loadChildren: () => import('./pages/hired-services/hired-services.module').then( m => m.HiredServicesPageModule)
+  },
+  {
+    path: 'energy-consumtion',
+    loadChildren: () => import('./pages/energy-consumtion/energy-consumtion.module').then( m => m.EnergyConsumtionPageModule)
+  },
+  {
+    path: 'sign-up',
+    loadChildren: () => import('./pages/sign-up/sign-up.module').then( m => m.SignUpPageModule)
   }
 ];
 
