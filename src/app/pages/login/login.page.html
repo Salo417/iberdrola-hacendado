@@ -8,20 +8,24 @@
   <ion-list lines="none" class="ion-padding">
     <ion-item>
       <ion-label position="stacked">Usuario</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" [formControl]="userName"></ion-input>
     </ion-item>
     <br>
     <ion-item>
       <ion-label position="stacked">Contraseña</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-input type="password" [formControl]="password"></ion-input>
     </ion-item>
     <br>
     <ion-text>
-      <a href="sign-up">¿No tienes una cuenta?</a>
+      <a [routerLink]="['../sign-up']">¿No tienes una cuenta?</a>
     </ion-text>
     <br>
     <ion-item class="ion-float-right">
-      <ion-button>Iniciar sesión</ion-button>
+      <ion-button [routerLink]="['../home']">Iniciar sesión</ion-button>
+    </ion-item>
+    <br>
+    <ion-item>
+      <ion-button (click)="verUsuariosConsole()">Ver usuarios</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

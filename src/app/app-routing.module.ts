@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+//import { UserLogedService } from './core/services/api/user-loged.service';
 
 const routes: Routes = [
   {
@@ -41,6 +42,8 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
-  exports: [RouterModule]
+  //providers: [ UserLogedService]
+  //exports: [RouterModule],
+
 })
 export class AppRoutingModule { }

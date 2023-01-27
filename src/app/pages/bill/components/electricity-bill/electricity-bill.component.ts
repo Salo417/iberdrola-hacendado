@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-electricity-bill',
@@ -6,10 +7,18 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./electricity-bill.component.scss'],
 })
 export class ElectricityBillComponent implements OnInit {
+  telephone: string;
   @Input() date: string = "01/02/1999";
+  // Temp
+  @Output() addTelephone = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {}
+
+  // Temp
+  changeTelephone() {
+    this.addTelephone.emit(this.telephone);
+  }
 
 }

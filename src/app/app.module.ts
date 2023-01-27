@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { CoreModule } from './core/core.module';
+import { HttpClientModule } from '@angular/common/http';
 //import interactionPlugin from '@fullcalendar/interaction';
 
 
@@ -19,11 +21,13 @@ FullCalendarModule.registerPlugins([
   declarations: [AppComponent],
   imports: [
     BrowserModule, 
+    HttpClientModule,
     IonicModule.forRoot(), 
     AppRoutingModule,
-    FullCalendarModule
+    FullCalendarModule,
+    CoreModule.forRoot()
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [ { provide: RouteReuseStrategy, useClass: IonicRouteStrategy } ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
