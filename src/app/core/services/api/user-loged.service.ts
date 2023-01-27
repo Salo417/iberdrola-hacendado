@@ -72,7 +72,7 @@ export class UserLogedService {
 
 
   public async postUser(user: IUser) {
-      /*
+    /*
       let options: {
         headers?:         HttpHeaders | {[header: string]: string | string[]};
         context?:         HttpContext;
