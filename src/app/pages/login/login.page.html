@@ -8,7 +8,7 @@
   <ion-list lines="none" class="ion-padding">
     <ion-item>
       <ion-label position="stacked">Usuario</ion-label>
-      <ion-input type="text" [formControl]="userName"></ion-input>
+      <ion-input type="text" [formControl]="userEmail"></ion-input>
     </ion-item>
     <br>
     <ion-item>
@@ -20,8 +20,14 @@
       <a [routerLink]="['../sign-up']">¿No tienes una cuenta?</a>
     </ion-text>
     <br>
+    <!--
     <ion-item class="ion-float-right">
       <ion-button [routerLink]="['../home']">Iniciar sesión</ion-button>
+    </ion-item>
+    <br>
+    -->
+    <ion-item class="ion-float-right">
+      <ion-button (click)="login()">Iniciar sesión</ion-button>
     </ion-item>
     <br>
     <ion-item>

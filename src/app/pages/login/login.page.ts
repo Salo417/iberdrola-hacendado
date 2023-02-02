@@ -8,8 +8,8 @@ import { UserLogedService } from 'src/app/core/services/api/user-loged.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  userName: FormControl = new FormControl('');
-  password: FormControl = new FormControl('');
+  userEmail: FormControl = new FormControl('');
+  password:  FormControl = new FormControl('');
 
   constructor(private userService: UserLogedService) { }
 
@@ -19,6 +19,12 @@ export class LoginPage implements OnInit {
   // Temporal
   verUsuariosConsole(): void {
     console.log(this.userService.user);
+  }
+
+  login() {
+    let email = this.userEmail.value.toString();
+    let pass  = this.password.value.toString();
+    this.userService.authUser(email, pass);
   }
 
 }

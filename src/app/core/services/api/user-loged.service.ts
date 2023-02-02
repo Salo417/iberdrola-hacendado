@@ -7,12 +7,14 @@ import { HttpParams } from '@capacitor/core';
 
 
 class User implements IUser {
-  email: string;
+  username: string;
+  email:    string;
   password: string;
   picture?: string;
 
-  constructor(user: string, password: string, picture?: string) {
-    this.email     = user;
+  constructor(userName: string, user: string, password: string, picture?: string) {
+    this.username = userName;
+    this.email    = user;
     this.password = password;
     this.picture  = picture;
   }
@@ -26,9 +28,16 @@ export class UserLogedService {
   private static instantied: boolean = false;
 
   private static readonly DOM:           string = 'localhost';
-  private static readonly API_URL_USERS: string = 'api/iberdrola-hacendado-users';
+  private static readonly API_URL_USERS: string = 'api/auth/local/register';
   private static readonly API_PORT:      string = '1337';
   private static readonly FULL_API_POST: string = `http://${UserLogedService.DOM}:${UserLogedService.API_PORT}/${UserLogedService.API_URL_USERS}`;
+
+  private static readonly AUTH_API = {
+    DOM:      'localhost',
+    ENDP_URL: 'api/auth/local',
+    PORT:     '1337'
+  }
+  private static readonly FULL_API_AUTH = `http://${UserLogedService.AUTH_API.DOM}:${UserLogedService.AUTH_API.PORT}/${UserLogedService.AUTH_API.ENDP_URL}`;
 
   private _user: User;
 
@@ -55,8 +64,14 @@ export class UserLogedService {
   }
 
 
-  // MÉTODOS
-  private httpErrorGenerator(error: HttpErrorResponse, caught: Observable<string>) {
+  // METHODS
+  /**
+   * Generate a message error depending of the HTTP result code.
+   * @param error The http error.
+   * @param caught 
+   * @returns 
+   */
+  private httpErrorGenerator(error: HttpErrorResponse, caught: Observable<string>): Observable<never> {
     let retErrorException: Error = null;
 
     if (error.status === 0) {
@@ -71,7 +86,49 @@ export class UserLogedService {
   }
 
 
-  public async postUser(user: IUser) {
+  /**
+   * Authentication method to REST API in base to email and password.
+   * @param email User's email from who wants login.
+   * @param password The password introduced by user.
+   */
+  public async authUser(email: string, password: string) {
+    let credentialsJson = JSON.stringify({identifier: email, password: password});
+    let options: { 
+      headers?:         HttpHeaders | { [header: string]: string | string[]; }, 
+      observe:          'body', 
+      context?:         HttpContext, 
+      params?:          HttpParams | { [param: string]: string | number | boolean | readonly (string | number | boolean)[]; }, 
+      reportProgress?:  boolean, 
+      responseType?:    'json', 
+      withCredentials?: boolean 
+    } = {
+      headers: new HttpHeaders({'Content-Type': 'application/json; charset=utf-8', 'Accept': 'application/json'}),
+      observe: 'body',
+      responseType: 'json'
+    }
+
+    let request = this.http.post<string>(UserLogedService.FULL_API_AUTH, credentialsJson, options)
+      .pipe( catchError(this.httpErrorGenerator) );
+    
+    lastValueFrom<any>(request)
+      .then( response => {
+        console.log("Autenticación confirmada.");
+        console.log(response.user);
+        console.log(response.jwt);
+      })
+      .catch( error => {
+        console.log(typeof error);
+        console.error("Ha ocurrido un error desconocido" + error);
+      })
+  }
+
+
+  /**
+   * Submit an user to back-end.
+   * @param user The user that will submit using the IUser interface.
+   * @returns Promise for starting connection that returns the http response JSON string.
+   */
+  public postUser(user: IUser): Promise<string> {
     /*
       let options: {
         headers?:         HttpHeaders | {[header: string]: string | string[]};
@@ -84,7 +141,7 @@ export class UserLogedService {
       } 
       */
 
-    let resJson = JSON.stringify({data: user});
+    let resJson = JSON.stringify(user);
     let options: { 
       headers?:         HttpHeaders | { [header: string]: string | string[]; }, 
       observe:          'body', 
@@ -107,11 +164,13 @@ export class UserLogedService {
       .pipe( catchError(this.httpErrorGenerator) );
     //  .subscribe(data => console.log(data));
       
-    lastValueFrom(request)
+    return lastValueFrom(request);
+    /*
       .then(
         data  => console.log("Uauario registrado correctamente: " + data),
         error => console.error(error)
       )
       .catch(error => console.error(`No se ha podido conectar al servidor a causa de ${error}.`) );
+     */
   }
 }
