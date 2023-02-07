@@ -6,18 +6,23 @@ import { HttpClient, HttpContext, HttpErrorResponse, HttpHeaders } from '@angula
 import { HttpParams } from '@capacitor/core';
 
 
-class User implements IUser {
-  username: string;
-  email:    string;
-  password: string;
-  picture?: string;
+export class User implements IUser {
+  id:        number;
+  username:  string;
+  lastname:  string;
+  email:     string;
+  password?: string;
+  picture?:  string;
 
-  constructor(userName: string, user: string, password: string, picture?: string) {
+  constructor(id: number, userName: string, email: string, password?: string, picture?: string) {
+    this.id       = id;
     this.username = userName;
-    this.email    = user;
+    this.email    = email;
     this.password = password;
     this.picture  = picture;
   }
+
+  toString(): string { return `id: ${this.id}, username: ${this.username}, lastname: ${this.lastname}, email: ${this.email}, password: ${this.password}`; }
 }
 
 @Injectable({
@@ -25,6 +30,7 @@ class User implements IUser {
 })
 export class UserLogedService {
   // PROPIEDADES
+  private static token:      string;
   private static instantied: boolean = false;
 
   private static readonly DOM:           string = 'localhost';
@@ -91,7 +97,8 @@ export class UserLogedService {
    * @param email User's email from who wants login.
    * @param password The password introduced by user.
    */
-  public async authUser(email: string, password: string) {
+  public async authUser(email: string, password: string): Promise<IUser> {
+    //let ret: (IUser | Error);
     let credentialsJson = JSON.stringify({identifier: email, password: password});
     let options: { 
       headers?:         HttpHeaders | { [header: string]: string | string[]; }, 
@@ -107,19 +114,35 @@ export class UserLogedService {
       responseType: 'json'
     }
 
-    let request = this.http.post<string>(UserLogedService.FULL_API_AUTH, credentialsJson, options)
+    let request = this.http.post<any>(UserLogedService.FULL_API_AUTH, credentialsJson, options)
       .pipe( catchError(this.httpErrorGenerator) );
     
-    lastValueFrom<any>(request)
+    await lastValueFrom<any>(request)
       .then( response => {
         console.log("Autenticación confirmada.");
-        console.log(response.user);
-        console.log(response.jwt);
-      })
+
+        this._user = new User(
+          response.user.id,
+          response.user.username,
+          response.user.email
+        );
+        UserLogedService.token = response.jwt;
+        //console.log(response.user);
+        //console.log(response.jwt);
+        //console.log( this.user.toString() );
+        //console.log(UserLogedService.token);
+
+        //ret = this._user;
+    });
+    /*
       .catch( error => {
-        console.log(typeof error);
-        console.error("Ha ocurrido un error desconocido" + error);
-      })
+        //console.log(typeof error);
+        //console.error("Ha ocurrido un error desconocido" + error);
+        ret = error;
+      });
+    */
+    
+    return this._user;
   }
 
 

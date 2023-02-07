@@ -2,6 +2,9 @@
 @import "swiper/scss";
 @import "swiper/scss/navigation";
 
+ion-grid {
+  --ion-grid-columns: 2;
+}
 
 .swiper {
   width: 50%;
